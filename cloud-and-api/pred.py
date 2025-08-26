@@ -1,2 +1,0 @@
-def pred():
-    return "test"
