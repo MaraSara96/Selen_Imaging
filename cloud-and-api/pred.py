@@ -1,0 +1,2 @@
+def pred():
+    return "test"
