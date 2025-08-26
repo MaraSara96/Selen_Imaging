@@ -1,3 +1,10 @@
 .env
 .envrc
+__pycache__
+.streamlit/
 .streamlit/secrets.toml
+preprocess.py
+app.py:Zone.Identifier
+.gitignore
+Dockerfile:Zone.Identifier
+.env.yaml
