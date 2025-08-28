@@ -23,14 +23,9 @@ if file:
             r = requests.post(API_URL, files={"file": ("image.jpg", buf, "image/jpeg")}, timeout=20)
             r.raise_for_status()
             data = r.json()
-            st.write(f"""#### This image belongs to class **{data['class index']}**.""")
-            st.write(f"#### Probabilities:")
-            st.write(f"""Class 1: {data['class 1']} ---
-                     Class 2: {data['class 2']} ---
-                     Class 3: {data['class 3']} ---
-                     Class 4: {data['class 4']} ---
-                     Class 5: {data['class 5']}""")
-
+            st.write(f"""##### This image belongs to class **{data['class index']}**.""")
+            st.write(f"###### Probabilities:")
+            st.text(f"Class 1: {data['class 1']} \nClass 2: {data['class 2']} \nClass 3: {data['class 3']} \nClass 4: {data['class 4']} \nClass 5: {data['class 5']}")
 
         except Exception as e:
            st.error(f"API error: {e}")

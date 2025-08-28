@@ -21,11 +21,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.post("/uploadfile/")
 async def process_uploaded_file_for_prediction(file: UploadFile):
-    try:
 
+    try:
         contents = await file.read()
         image_stream = BytesIO(contents)
         image = Image.open(image_stream)
@@ -34,9 +33,14 @@ async def process_uploaded_file_for_prediction(file: UploadFile):
         image_processed = np.array(image)
         image_with_batch_dim = np.expand_dims(image_processed, axis=0)
 
-        my_model = load_model()
+        try:    # check if latest model gives proper output
+            my_model = load_model(version="latest")
+            prediction = my_model.predict(image_with_batch_dim)
 
-        prediction = my_model.predict(image_with_batch_dim)
+        except:  # use 2nd latest model if latest model does not work
+            my_model = load_model(version="fallback")
+            prediction = my_model.predict(image_with_batch_dim)
+
         class_index = np.argmax(prediction, axis=1)   # Determining the predicted class with the highest probability
 
         prediction_dict = {}
@@ -50,7 +54,7 @@ async def process_uploaded_file_for_prediction(file: UploadFile):
         return prediction_dict
 
     except Exception as e:
-        return {"error": str(e)}
+       return {"error": str(e)}
 
 @app.get("/")
 def root():
