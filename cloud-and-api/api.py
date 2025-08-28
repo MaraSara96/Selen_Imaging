@@ -33,15 +33,22 @@ async def process_uploaded_file_for_prediction(file: UploadFile):
 
         image_processed = np.array(image)
         image_with_batch_dim = np.expand_dims(image_processed, axis=0)
-        image_processed_exp = image_with_batch_dim / 255   # Normalizing
 
         my_model = load_model()
 
-        prediction = my_model.predict(image_processed_exp)
-        # class_index = np.argmax(prediction, axis=1)   # Determining the predicted class with the highest probability
-        
-        return str(prediction)
-    
+        prediction = my_model.predict(image_with_batch_dim)
+        class_index = np.argmax(prediction, axis=1)   # Determining the predicted class with the highest probability
+
+        prediction_dict = {}
+        prediction_dict['class 1'] = f"{float(prediction[0,0]) * 100:.2f}%"
+        prediction_dict['class 2'] = f"{float(prediction[0,1]) * 100:.2f}%"
+        prediction_dict['class 3'] = f"{float(prediction[0,2]) * 100:.2f}%"
+        prediction_dict['class 4'] = f"{float(prediction[0,3]) * 100:.2f}%"
+        prediction_dict['class 5'] = f"{float(prediction[0,4]) * 100:.2f}%"
+        prediction_dict['class index'] = int(class_index)+1
+
+        return prediction_dict
+
     except Exception as e:
         return {"error": str(e)}
 

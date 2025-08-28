@@ -23,18 +23,15 @@ if file:
             r = requests.post(API_URL, files={"file": ("image.jpg", buf, "image/jpeg")}, timeout=20)
             r.raise_for_status()
             data = r.json()
-            st.write(data)   # For the time being, just printing what's given back from the API
-        
-        # try:      # This code can be used later once we want to give back prediction results in a more detailed way
-        #     r = requests.post(API_URL, files={"file": ("image.jpg", buf, "image/jpeg")}, timeout=20)
-        #     r.raise_for_status()
-        #     data = r.json()
-        #     prob = float(data.get("probability", 0.0))
-        #     st.success(f"Result: **{data.get('label','?').upper()}** · "
-        #                f"Confidence: {prob:.2%} · "
-        #                f"Model: {data.get('model_version','?')}")
-        #     st.progress(min(max(prob,0.0),1.0))
-        
+            st.write(f"""#### This image belongs to class **{data['class index']}**.""")
+            st.write(f"#### Probabilities:")
+            st.write(f"""Class 1: {data['class 1']} ---
+                     Class 2: {data['class 2']} ---
+                     Class 3: {data['class 3']} ---
+                     Class 4: {data['class 4']} ---
+                     Class 5: {data['class 5']}""")
+
+
         except Exception as e:
            st.error(f"API error: {e}")
 else:
