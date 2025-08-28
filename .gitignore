@@ -33,3 +33,7 @@ __pycache__
 auslagerung
 /auslagerung
 auslagerung/
+
+.python-version
+/.python-version
+.python-version/
