@@ -27,6 +27,8 @@ cloud-and-api/app.py:Zone.Identifier
 cloud-and-api/Dockerfile:Zone.Identifier
 cloud-and-api/restore_environment.txt
 
+cloud-and-api/just-a-random-file.txt
+
 __pycache__/
 __pycache__
 
