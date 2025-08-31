@@ -7,34 +7,34 @@ from tensorflow import keras
 from google.cloud import storage
 from params import *
 
-def load_model(version="latest") -> keras.Model:
+def load_model(type="latest", version="fallback") -> keras.Model:
     """
     Return a saved model from GCS
 
     """
-    print(Fore.BLUE + f"\nLoad latest model from GCS..." + Style.RESET_ALL)
+    print(Fore.BLUE + f"\nLoading model from GCS..." + Style.RESET_ALL)
 
     client = storage.Client()
     bucket = client.bucket(BUCKET_NAME)
 
     blobs = client.bucket(BUCKET_NAME).list_blobs(prefix="models/")
 
-    if version == "latest":    # get latest model
-        latest_blob = max(blobs, key=lambda x: x.updated)
-        gs_uri_latest = f"gs://{BUCKET_NAME}/{latest_blob.name}"
-        latest_model = keras.models.load_model(gs_uri_latest)
+    if type == "user_selected":    # get user-selected model
+        gs_uri_user_selected = f"gs://{BUCKET_NAME}/{version}"
+        model_user_selected = keras.models.load_model(gs_uri_user_selected)
 
-        print("✅ Latest model downloaded from Google Cloud Storage")
-        print(f"""Model specifications: {latest_blob.name}""")
+        print("✅ User-selected model downloaded from Google Cloud Storage")
+        print(f"""Model specifications: {version}""")
 
-        return latest_model
+        return model_user_selected
 
-    # get 2nd latest model
-    latest_blob_2nd = sorted(blobs, key=lambda x: x.updated, reverse=True)[1]
-    gs_uri_2ndlatest = f"gs://{BUCKET_NAME}/{latest_blob_2nd.name}"
-    latest_model_2nd = keras.models.load_model(gs_uri_2ndlatest)
+    if type == "fallback":    # get fallback model
 
-    print("✅ Fallback model downloaded from Google Cloud Storage")
-    print(f"""Model specifications: {latest_blob_2nd.name}""")
+        blob_fallback = sorted(blobs, key=lambda x: x.updated, reverse=True)[2]  # Just going back 3 model iterations
+        gs_uri_fallback = f"gs://{BUCKET_NAME}/{blob_fallback.name}"
+        model_fallback = keras.models.load_model(gs_uri_fallback)
 
-    return latest_model_2nd
+        print("✅ Fallback model downloaded from Google Cloud Storage")
+        print(f"""Model specifications: {blob_fallback.name}""")
+
+        return model_fallback

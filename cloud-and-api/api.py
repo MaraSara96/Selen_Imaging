@@ -1,10 +1,11 @@
 import os
 import pandas as pd
 import numpy as np
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from params import *
 from PIL import Image
+import io
 from io import BytesIO
 from model_load import load_model
 
@@ -22,7 +23,7 @@ app.add_middleware(
 )
 
 @app.post("/uploadfile/")
-async def process_uploaded_file_for_prediction(file: UploadFile):
+async def process_uploaded_file_for_prediction(file: UploadFile = File(...), option: str = Form(...)):
 
     try:
         contents = await file.read()
@@ -33,15 +34,16 @@ async def process_uploaded_file_for_prediction(file: UploadFile):
         image_processed = np.array(image)
         image_with_batch_dim = np.expand_dims(image_processed, axis=0)
 
-        try:    # check if latest model gives proper output
-            my_model = load_model(version="latest")
+        try:    # load model selected by user
+            my_model = load_model(type="user_selected", version=option)
             prediction = my_model.predict(image_with_batch_dim)
+            class_index = np.argmax(prediction, axis=1)
 
-        except:  # use 2nd latest model if latest model does not work
-            my_model = load_model(version="fallback")
+        except:  # use fallback model if selected model does not work
+
+            my_model = load_model(type="fallback")
             prediction = my_model.predict(image_with_batch_dim)
-
-        class_index = np.argmax(prediction, axis=1)   # Determining the predicted class with the highest probability
+            class_index = np.argmax(prediction, axis=1)
 
         prediction_dict = {}
         prediction_dict['class 1'] = f"{float(prediction[0,0]) * 100:.2f}%"
