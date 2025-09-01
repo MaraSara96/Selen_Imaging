@@ -23,7 +23,7 @@ list_of_blobs = [blob.name for blob in sorted_blobs]
 selected_model = st.selectbox("**Choose the model to be used**" + "\n\n" + "*(list sorted descending by model deployment date - latest model is preselected)*", list_of_blobs)
 data_to_send = {"option": selected_model}
 
-file = st.file_uploader("Upload PNG/JPG" + "\n\n" +":red[(Only upload B/W images in combination with a '... BW' model selection above. Processing B/W images in models trained on color images might lead to wrong classifications.)]", type=["png","jpg","jpeg"])
+file = st.file_uploader("Upload PNG/JPG" + "\n\n" +":red[(only upload B/W images in combination with a 'BW' model selection above. Processing B/W images in models trained on color images might lead to wrong classifications.)]", type=["png","jpg","jpeg"])
 
 
 if file:
