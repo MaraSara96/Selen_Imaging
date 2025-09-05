@@ -3,7 +3,7 @@ import base64
 import multiprocessing
 import pandas as pd
 import numpy as np
-from fastapi import FastAPI, UploadFile, File, Form, APIRouter
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from params import *
 from PIL import Image
@@ -13,10 +13,8 @@ from cellpose import models
 from cellpose.io import imread
 from model_load import load_model
 import matplotlib.pyplot as plt
-# import augmentation
 
 segmentation = FastAPI()
-# segmentation.include_router(augmentation.segmentation, prefix="", tags=["segment_augmentation"])
 
 # CORS Middleware to allow for cross-origin requests from Streamlit
 origins = ["*"]
@@ -49,8 +47,10 @@ async def segment_uploaded_file(file: UploadFile = File(...)):
         img = imread('temp.jpg')
 
         try:
+            # Diameter not specified (takes more computation), augmentation on (takes more computation)
+            # masks, flows, diams = model.eval(img, channels=[0, 0], diameter=None, augment=True)
 
-            masks, flows, diams = model.eval(img, channels=[0, 0], diameter=150, augment=False)
+            masks, flows, diams = model.eval(img, channels=[0, 0])
 
         except Exception as e:
             print(e)
