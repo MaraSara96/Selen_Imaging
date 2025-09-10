@@ -122,7 +122,7 @@ if file:
         if cell_data.get('class index') == 'Myeloblast':
           myeloblast_count += 1
 
-      if myeloblast_count > 1:
+      if myeloblast_count >= 1:
         st.markdown("<span style='color:red; font-size:1.3em;'><b>" + str(myeloblast_count) + " Myeloblast cell(s) found, which can indicate blood cancer.</b>", unsafe_allow_html=True)
       else:
         st.write(f"No direct indication for blood cancer from this blood smear.")
