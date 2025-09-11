@@ -1,0 +1,4 @@
+Google Colabs used in this project:
+- "Data_cleaning.ipynb": https://colab.research.google.com/drive/1qBW3kCTxIjAJV2JrcRe4OJm1Il6KPf6I
+- "Selen_Data norm and Model.ipynb": https://colab.research.google.com/drive/1HDUbs5PYiMbRS9aSKwSsToLZ16b_6Xuo
+- "Selen_RGB with seg_photos.ipynb": https://colab.research.google.com/drive/1lOblVbVerxve9O3F_s66O8lpNMirs4Tp
