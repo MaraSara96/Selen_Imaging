@@ -1,11 +1,6 @@
-# Variablen
-GCP_REGION ?= europe-west1
-GCP_PROJECT ?= le-wagon-testprojekt
-GAR_IMAGE ?= selen-imaging_torstenweindl
-
 IMAGE = $(GCP_REGION)-docker.pkg.dev/$(GCP_PROJECT)/selenimaging/$(GAR_IMAGE):prod
 
-# Default Target: alles nacheinander ausführen
+# Default target: Run everything sequentially
 all: build push deploy
 
 # Docker Build
@@ -16,7 +11,7 @@ build:
 push: build
 	docker push $(IMAGE)
 
-# Deploy zu Cloud Run
+# Deploy to Cloud Run
 deploy: push
 	gcloud run deploy \
 	  --image $(IMAGE) \
