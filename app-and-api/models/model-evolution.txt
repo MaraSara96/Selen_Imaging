@@ -1,0 +1,14 @@
+Documentation of model evolution by L.-P. A.:
+- input layer : takes in RGB images (256,256)
+- rescaling, flipping and rotation layers (i took out the blurring, translating and zooming layers as they were screwing up the accuracy)
+- then: 3 Conv2D layers with kernels of decreasing sizes : 4 -> 3 -> 2
+- a flattening layer
+- 1 dense layer with 100 features
+- 1 output layer with the 6 categories using softmax
+- in total: 215,058 trainable parameters
+- i left out the dense layers as they were impacting the accuracy by more than 10 points
+- same for regularization techniques
+- the black and white images approach was very effective with non segmented images but was detrimental for segmented cells impacting the accuracy level by circa 5 points
+- the main limitation of this model is the dataset that doesnt include all types of cells
+- so when it is passed a cell that doesnt belong to these 6 categories it will just guess something that is closest
+- the other limitation is that we have chosen to train the model on segmented images to increase the purity of the "raw material" by cutting out noise outside the cell (that is not of interest for detection). so the resolution of the images of the training dataset is lower, but is very well segmented. thus augmentation is just detrimental in our case
