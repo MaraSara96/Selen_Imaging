@@ -1,4 +1,4 @@
-Documentation of model evolution by L.-P. A.:
+Documentation of deep learning model evolution by L.-P. A.:
 - input layer : takes in RGB images (256,256)
 - rescaling, flipping and rotation layers (i took out the blurring, translating and zooming layers as they were screwing up the accuracy)
 - then: 3 Conv2D layers with kernels of decreasing sizes : 4 -> 3 -> 2
