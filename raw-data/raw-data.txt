@@ -1,0 +1,2 @@
+Raw data used in this project:
+https://www.kaggle.com/datasets/sumithsingh/blood-cell-images-for-cancer-detection/data
